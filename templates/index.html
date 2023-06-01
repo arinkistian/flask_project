@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Besley:wght@900&family=IBM+Plex+Sans+Thai:wght@100&display=swap">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+  <title>Customer Segmentation</title>
+</head>
+
+<style>
+  body {
+    font-family: 'IBM Plex Sans Thai', serif;
+    font-size: 14px;
+  }
+</style>
+
+<body>
+  <div class="login-box">
+
+    <form>
+      <div class="user-box">
+        <input type="text" name="" required="">
+        <label>Username</label>
+      </div>
+      <div class="user-box">
+        <input type="password" name="" required="">
+        <label>Password</label>
+      </div>
+      <center>
+        <a href="{{ url_for('dashboard') }}">LOGIN<span></span></a>
+      </center>
+    </form>
+  </div>
+</body>
+
+</html>
