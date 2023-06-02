@@ -1,12 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Segmentation</title>
+    <title>Process Data</title>
 </head>
 <body>
+    <h1>Preprocessed Data</h1>
+    <!-- <button id="cluster-button">Cluster Data</button> -->
+    <a href="/cluster"><button>Cluster Data</button></a>
+
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('#cluster-button').click(function() {
+            window.location.href = '/cluster';
+        });
+    });
+    </script> -->
+    <div>
+        {{ data | safe }}
+    </div>
+
     
 </body>
 </html>

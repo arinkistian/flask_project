@@ -21,7 +21,7 @@
     <h1>Halo, ((nama))</h1>
     <div></div>
     <div class="container">
-      <!-- <div class="header">
+      <div class="header">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
           <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -32,7 +32,7 @@
           </g>
         </svg>
         <p>Browse File to upload!</p>
-      </div> -->
+      </div>
       <form action="/preprocess" method="POST" enctype="multipart/form-data">
         <label for="file" class="footer">
           <svg fill="#000000" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
@@ -61,18 +61,6 @@
         </label>
         <input id="file" type="file" accept="text/csv,application/vnd.ms-excel" name="file">
         <input type="submit" value="Preprocess Data">
-        <!-- <button type="submit">Upload</button> -->
-        <!-- <a href="{{ url_for('/preprocess') }}">
-          <button id="process-button" class="cssbuttons-io-button" type="submit" disabled> Process Data
-            <div class="icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                <path fill="none" d="M0 0h24v24H0z"></path>
-                <path fill="currentColor"
-                  d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"></path>
-              </svg>
-            </div>
-          </button>
-        </a> -->
       </form>
     </div>
 
