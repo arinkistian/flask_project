@@ -2,14 +2,37 @@
 <html>
 <head>
     <title>Cluster Results</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
     <h1>Cluster Results</h1>
-    <h3>Clusters:</h3>
-    <ul>
-        {% for cluster in clusters %}
-            <li>{{ cluster }}</li>
-        {% endfor %}
-    </ul>
+    <table>
+        <thead>
+            <tr>
+                <th>Cluster</th>
+                <th>Total Data Points</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cluster, data in clusters.items() %}
+            <tr>
+                <td>{{ cluster }}</td>
+                <td>{{ data }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>

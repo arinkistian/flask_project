@@ -2,10 +2,11 @@ from flask import Flask, render_template, request, redirect
 
 import pandas as pd
 from preprocess import preprocess_data
-
-# import pandas as pd
+from clustering import perform_clustering
 
 app = Flask(__name__)
+
+preprocessed_data = pd.DataFrame()
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() == 'csv'
@@ -18,9 +19,16 @@ def index():
 def dashboard():
     return render_template('dashboard.html')
 
-@app.route('/cluster')
-def cluster():
-    return render_template('cluster.html')
+@app.route('/cluster', methods=['GET'])
+def cluster_data():
+    global preprocessed_data
+    # Perform clustering on the preprocessed data
+    n_clusters = 4  # Set the desired number of clusters
+    clusters = perform_clustering(preprocessed_data, n_clusters)
+
+    # Render the cluster.html template and pass the clusters
+    return render_template('cluster.html', clusters=clusters)
+
 
 @app.route('/preprocess', methods=['POST'])
 def preprocess_route():

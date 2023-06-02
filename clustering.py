@@ -1,21 +1,21 @@
 # Import modules and packages
 import pandas as pd
 import numpy as np
-import math
-import random
+
 import matplotlib.pyplot as plt
-import warnings
+
+# import warnings
 import seaborn as sns
 plt.style.use('seaborn')
-from google.colab import drive
-drive.mount('/content/drive')
+# from google.colab import drive
+# drive.mount('/content/drive')
 
 import os
 from scipy.spatial.distance import cdist
 # from sil_coef import silhouette_coef/ficient
 import random
 
-import sklearn
+# import sklearn
 from sklearn.preprocessing import StandardScaler
 # from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
@@ -101,12 +101,22 @@ class KMeans:
                 print(self.centroids)
                 
 
-number_of_clusters = 4
-kmeans = KMeans(n_clusters=number_of_clusters)
-kmeans.train(df=df_scaled, verbose=False)
+# number_of_clusters = 4
+# kmeans = KMeans(n_clusters=number_of_clusters)
+# kmeans.train(df=df_scaled, verbose=False)
 
-# Extract the results
-df_scaled['cluster'] = kmeans.clusters
-centroids = kmeans.centroids
-centroids['cluster'] = 'centroid'
-all_df = pd.concat([df_scaled, centroids])
+# # Extract the results
+# df_scaled['cluster'] = kmeans.clusters
+# centroids = kmeans.centroids
+# centroids['cluster'] = 'centroid'
+# all_df = pd.concat([df_scaled, centroids])
+
+def perform_clustering(df_scaled, n_clusters, verbose=False):
+    kmeans = KMeans(n_clusters=n_clusters)
+    kmeans.train(df_scaled, verbose=verbose)
+    clusters = {}
+    for cluster in range(n_clusters):
+        cluster_data = df_scaled[kmeans.clusters == cluster]
+        num_data_points = len(cluster_data)
+        clusters[f'Cluster {cluster+1}'] = num_data_points
+    return clusters
