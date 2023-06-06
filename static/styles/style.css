@@ -96,6 +96,14 @@
   }
 
 /* dashboard */
+.my-button {
+  margin-bottom: 10px;
+}
+
+.my-div {
+  margin-bottom: 20px;
+}
+
 .container {
   height: 300px;
   width: 300px;
