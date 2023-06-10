@@ -1,4 +1,4 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Cluster Results</title>
@@ -35,71 +35,4 @@
         </tbody>
     </table>
 </body>
-</html>
- -->
-
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>Cluster Results</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        th,
-        td {
-            text-align: left;
-            padding: 8px;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-</head>
-
-<body>
-    <h1>Cluster Results</h1>
-    <table>
-        <!-- Table code here -->
-    </table>
-
-    <div id="visualization"></div>
-
-    <script>
-        var xs = JSON.parse('{{ column1|json_encode }}');
-        var ys = JSON.parse('{{ column2|json_encode }}');
-        var zs = JSON.parse('{{ column3|json_encode }}');
-        var colors = JSON.parse('{{ column4|json_encode }}');
-
-        var trace1 = {
-            type: 'scatter3d',
-            mode: 'markers',
-            x: xs,
-            y: ys,
-            z: zs,
-            marker: {
-                color: colors,
-                size: 5,
-                opacity: 0.8
-            }
-        };
-
-        var layout = {
-            scene: {
-                xaxis: { title: 'Column 1' },
-                yaxis: { title: 'Column 2' },
-                zaxis: { title: 'Column 3' }
-            }
-        };
-
-        var data = [trace1];
-        Plotly.newPlot('visualization', data, layout);
-    </script>
-</body>
-
 </html>

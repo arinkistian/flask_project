@@ -26,7 +26,14 @@ def cluster_data():
     n_clusters = 4  # Set the desired number of clusters
     clusters = perform_clustering(preprocessed_data, n_clusters)
 
+    # Get the data for visualization
+    # column1 = [row['Recency'] for row in preprocessed_data]
+    # column2 = [row['Frequency'] for row in preprocessed_data]
+    # column3 = [row['MonetaryValue'] for row in preprocessed_data]
+    # column4 = [row['Length'] for row in preprocessed_data]
+
     # Render the cluster.html template and pass the clusters
+    # return render_template('cluster.html', clusters=clusters, column1=column1, column2=column2, column3=column3, column4=column4)
     return render_template('cluster.html', clusters=clusters)
 
 
