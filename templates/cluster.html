@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Cluster Results</title>
     <style>
@@ -7,15 +8,19 @@
             border-collapse: collapse;
             width: 100%;
         }
-        th, td {
+
+        th,
+        td {
             text-align: left;
             padding: 8px;
         }
+
         th {
             background-color: #f2f2f2;
         }
     </style>
 </head>
+
 <body>
     <h1>Cluster Results</h1>
     <table>
@@ -34,5 +39,31 @@
             {% endfor %}
         </tbody>
     </table>
+    <h2>Cluster Results</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Buyer ID</th>
+                <th>Recency</th>
+                <th>Frequency</th>
+                <th>MonetaryValue</th>
+                <th>Length</th>
+                <th>Cluster</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for index, row in data_lrfm.iterrows() %}
+            <tr>
+                <td>{{ index }}</td>
+                <td>{{ row['Recency'] }}</td>
+                <td>{{ row['Frequency'] }}</td>
+                <td>{{ row['MonetaryValue'] }}</td>
+                <td>{{ row['Length'] }}</td>
+                <td>{{ row['Cluster'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>    
 </body>
+
 </html>

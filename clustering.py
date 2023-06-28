@@ -3,26 +3,14 @@ import pandas as pd
 import numpy as np
 
 import matplotlib.pyplot as plt
-
-# import warnings
 import seaborn as sns
 plt.style.use('seaborn')
-# from google.colab import drive
-# drive.mount('/content/drive')
 
 import os
 from scipy.spatial.distance import cdist
-# from sil_coef import silhouette_coef/ficient
-import random
-
-# import sklearn
-from sklearn.preprocessing import StandardScaler
-# from sklearn.cluster import KMeans
-from sklearn.metrics import silhouette_score
 
 # Read data
 # cari cara baca data dari uploaded file
-
 # K-MEANS
 class KMeans:
     """The k-means algorithm."""
@@ -114,9 +102,17 @@ class KMeans:
 def perform_clustering(df_scaled, n_clusters, verbose=False):
     kmeans = KMeans(n_clusters=n_clusters)
     kmeans.train(df_scaled, verbose=verbose)
+
     clusters = {}
     for cluster in range(n_clusters):
         cluster_data = df_scaled[kmeans.clusters == cluster]
         num_data_points = len(cluster_data)
         clusters[f'Cluster {cluster+1}'] = num_data_points
-    return clusters
+    
+    # Assign cluster labels to the original dataframe
+    df_scaled['Cluster'] = kmeans.clusters
+    # df_scaled = df_scaled.reset_index()
+    
+    return clusters, df_scaled
+
+

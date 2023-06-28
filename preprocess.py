@@ -27,7 +27,7 @@ def preprocess_data(df_):
     encoder = LabelEncoder()
 
     # Menggunakan encoder untuk mengonversi kolom buyer_id menjadi bilangan bulat
-    df_finish.loc[:, 'buyer_id_encoded'] = encoder.fit_transform(df_finish['buyer_id'])
+    df_finish['buyer_id_encoded'] = encoder.fit_transform(df_finish['buyer_id']) + 1
 
     # Hitung variabel RFM
     snapshot_date = df_finish['order_datetime'].max() + timedelta(days=1)
@@ -54,8 +54,19 @@ def preprocess_data(df_):
     df_scaled = scaler.fit_transform(rescaling_df)
     df_scaled.shape
 
-    df_scaled = pd.DataFrame(df_scaled)
-    df_scaled.columns = ['Recency','Frequency','MonetaryValue', 'Length']
-    df_scaled.head()
+    df_scaled = pd.DataFrame(df_scaled, columns=['Recency', 'Frequency', 'MonetaryValue', 'Length'])
+    
+    return data_lrfm, df_scaled
 
-    return df_scaled
+# import pickle
+# def save_data_lrfm():
+#     global data_lrfm
+
+#     # Retrieve the data_lrfm from the request or any other source
+#     data_lrfm = pd.DataFrame(data_lrfm, columns=['buyer_id_encoded','Recency','Frequency','MonetaryValue', 'Length'])
+
+#     # Save data_lrfm to a file using pickle
+#     with open('data_lrfm.pkl', 'wb') as f:
+#         pickle.dump(data_lrfm, f)
+
+#     return 'Data saved successfully.'
