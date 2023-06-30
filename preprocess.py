@@ -56,6 +56,10 @@ def preprocess_data(df_):
 
     df_scaled = pd.DataFrame(df_scaled, columns=['Recency', 'Frequency', 'MonetaryValue', 'Length'])
     
+    # Reset the index and add 1 to the index values
+    df_scaled = df_scaled.reset_index(drop=True)
+    df_scaled.index += 1
+    print(data_lrfm)
     return data_lrfm, df_scaled
 
 # import pickle

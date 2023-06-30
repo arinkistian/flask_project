@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, redirect, send_file
+from flask import Flask, render_template, request, redirect, send_file, make_response
 import pandas as pd
+from io import BytesIO
 
 from preprocess import preprocess_data
 from clustering import perform_clustering
@@ -7,6 +8,7 @@ from clustering import perform_clustering
 app = Flask(__name__)
 
 preprocessed_data = pd.DataFrame()
+merged_df = pd.DataFrame()
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() == 'csv'
@@ -41,25 +43,65 @@ def preprocess_route():
 
 @app.route('/cluster', methods=['GET'])
 def cluster_data():
-    global preprocessed_data, data_lrfm
+    global preprocessed_data, data_lrfm, merged_df  
 
     n_clusters = 3 
-    # clusters = perform_clustering(preprocessed_data, n_clusters, verbose=False)
-
-    # data_lrfm_copy = data_lrfm.copy()
-    # data_lrfm_copy['Cluster'] = clusters['Cluster']
-
-    # print(data_lrfm_copy)
 
     cluster_counts, df_clustered = perform_clustering(preprocessed_data, n_clusters)
 
     # Merge data_lrfm with df_clustered based on the index
     merged_df = data_lrfm.merge(df_clustered[['Cluster']], left_index=True, right_index=True)
 
-    # Merge data_lrfm with cluster_results based on the index
-    # merged_df = data_lrfm_copy.merge(cluster_results, left_index=True, right_index=True)
+    merged_df['buyer_id'] = range(1, len(merged_df) + 1)
+    # Move the "buyer_id" column to the left side
+    cols = merged_df.columns.tolist()
+    cols = ['buyer_id'] + [col for col in cols if col != 'buyer_id']
+    merged_df = merged_df[cols]
 
     return render_template('cluster.html', clusters=cluster_counts, data_lrfm=merged_df)
+
+@app.route('/download_merged_df', methods=['GET','POST'])
+def download_merged_df():
+    global merged_df
+
+    file_format = request.form['file_format']
+
+    if merged_df.empty:  # Check if merged_df is empty
+        return redirect('/cluster')  # Redirect to the appropriate page
+
+    if request.method == 'POST':
+        file_format = request.form['file_format']
+
+        # Create an in-memory file object
+        output = BytesIO()
+
+        # Export the merged_df DataFrame based on the selected file format
+        if file_format == 'csv':
+            merged_df.to_csv(output, index=False, encoding='utf-8-sig')
+            file_extension = 'csv'
+        elif file_format == 'excel':
+            merged_df.to_excel(output, index=False)
+            file_extension = 'xlsx'
+        else:
+            return 'Invalid file format.'
+
+        output.seek(0)  # Move the file object's position to the beginning
+
+        # Create a response with the file data
+        response = make_response(output.getvalue())
+
+        # Set the appropriate Content-Type and Content-Disposition headers
+        response.headers['Content-Type'] = 'text/csv' if file_extension == 'csv' else 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        response.headers['Content-Disposition'] = f'attachment; filename=merged_df.{file_extension}'
+
+        return response
+
+    return redirect('/cluster')
+
+@app.route('/download_cluster', methods=['GET'])
+def download_cluster():
+    return render_template('download_cluster.html')
+
 
 @app.route('/process_data')
 def process_data():

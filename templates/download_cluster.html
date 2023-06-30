@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Download File</title>
+</head>
+
+<body>
+    <h1>Download File</h1>
+    <form action="{{ url_for('download_merged_df') }}" method="post">
+        <label for="file_format">Select File Format:</label>
+        <select name="file_format" id="file_format">
+            <option value="csv">CSV</option>
+            <option value="excel">Excel</option>
+        </select>
+        <br><br>
+        <button type="submit">Download</button>
+    </form>
+</body>
+
+</html>
