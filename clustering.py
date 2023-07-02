@@ -23,6 +23,7 @@ class KMeans:
         self.old_centroids = pd.DataFrame()
         self.verbose = False
         self.predictions = []
+        self.wcss = pd.Series(dtype=float)
 
     def train(self, df, verbose):
         self.verbose = verbose
@@ -79,17 +80,19 @@ class KMeans:
                 print(self.old_centroids)
                 print("New centroids:")
                 print(self.centroids)
-                
+        
+        # Compute within-cluster variance (WCSS)
+        wcss_value = 0.0
+        for cls in range(self.n_clusters):
+            cls_idx = np.where(self.clusters == cls)[0]
 
-# number_of_clusters = 4
-# kmeans = KMeans(n_clusters=number_of_clusters)
-# kmeans.train(df=df_scaled, verbose=False)
+            if len(cls_idx) > 0:
+                cluster_points = self.data.iloc[cls_idx]
+                centroid = self.centroids.loc[cls]
+                distances = np.linalg.norm(cluster_points - centroid.values, axis=1)
+                wcss_value += np.sum(distances ** 2)
 
-# # Extract the results
-# df_scaled['cluster'] = kmeans.clusters
-# centroids = kmeans.centroids
-# centroids['cluster'] = 'centroid'
-# all_df = pd.concat([df_scaled, centroids])
+            self.wcss[f'Cluster {cls}'] = wcss_value
 
 def perform_clustering(df_scaled, n_clusters, verbose=False):
     kmeans = KMeans(n_clusters=n_clusters)

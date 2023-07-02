@@ -32,7 +32,7 @@ def preprocess_data(df_):
     # Hitung variabel RFM
     # snapshot_date = df_finish['order_datetime'].max() + timedelta(days=1)
     # snapshot_date_str = snapshot_date.strftime('%Y-%m-%d')
-
+    today = datetime.now(timezone.utc)
     data_lrfm = df_finish.groupby(['buyer_id_encoded']).agg({
         'order_datetime': lambda x: (today - x.max()).days,
         'buyer_id_encoded': 'count',
@@ -43,7 +43,6 @@ def preprocess_data(df_):
                     'gmv': 'MonetaryValue'}, inplace=True)
 
     # Hitung variabel L
-    today = datetime.now(timezone.utc)
     data_lrfm['Length'] = (today - df_finish.groupby(['buyer_id_encoded'])['order_datetime'].min()).dt.days
 
     # Rescaling Atribute
