@@ -29,14 +29,6 @@ class KMeans:
         self.data = df.copy(deep=True)
         self.clusters = np.zeros(len(self.data), dtype=float)  # Perbaikan di sini
 
-        # Randomly initialize centroids
-        # if not hasattr(self, "centroids") or self.centroids.empty:
-        #     unique_rows = self.data.drop_duplicates()
-        #     unique_rows.reset_index(drop=True, inplace=True)
-        #     np.random.seed(0)  # Mengatur seed generator angka acak
-        #     self.centroids = unique_rows.sample(n=self.n_clusters)
-        #     self.centroids.reset_index(drop=True, inplace=True)
-
         unique_rows = self.data.drop_duplicates()
         unique_rows.reset_index(drop=True, inplace=True)
         np.random.seed(0)  # Mengatur seed generator angka acak

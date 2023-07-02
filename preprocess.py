@@ -30,11 +30,11 @@ def preprocess_data(df_):
     df_finish['buyer_id_encoded'] = encoder.fit_transform(df_finish['buyer_id']) + 1
 
     # Hitung variabel RFM
-    snapshot_date = df_finish['order_datetime'].max() + timedelta(days=1)
-    snapshot_date_str = snapshot_date.strftime('%Y-%m-%d')
+    # snapshot_date = df_finish['order_datetime'].max() + timedelta(days=1)
+    # snapshot_date_str = snapshot_date.strftime('%Y-%m-%d')
 
     data_lrfm = df_finish.groupby(['buyer_id_encoded']).agg({
-        'order_datetime': lambda x: (snapshot_date - x.max()).days,
+        'order_datetime': lambda x: (today - x.max()).days,
         'buyer_id_encoded': 'count',
         'gmv': 'sum'})
 

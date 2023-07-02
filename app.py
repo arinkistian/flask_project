@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, send_file, make_response
 import pandas as pd
 from io import BytesIO
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 from preprocess import preprocess_data
 from clustering import perform_clustering
@@ -43,7 +45,7 @@ def preprocess_route():
 
 @app.route('/cluster', methods=['GET'])
 def cluster_data():
-    global preprocessed_data, data_lrfm, merged_df  
+    global preprocessed_data, data_lrfm, merged_df, cluster_counts, df_scaled
 
     n_clusters = 3 
 
@@ -58,7 +60,27 @@ def cluster_data():
     cols = ['buyer_id'] + [col for col in cols if col != 'buyer_id']
     merged_df = merged_df[cols]
 
-    return render_template('cluster.html', clusters=cluster_counts, data_lrfm=merged_df)
+    # Create a 3D plot
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+
+    # Plot the data points with cluster representation
+    ax.scatter(df_scaled["MonetaryValue"],df_scaled["Recency"],df_scaled["Length"], s=df_scaled["Frequency"] * 100, c=merged_df["Cluster"], alpha=0.5, cmap="Spectral")
+
+    # Set labels for each axis
+    ax.set_xlabel("MonetaryValue")
+    ax.set_ylabel("Recency")
+    ax.set_zlabel("Length")
+
+    # Add a colorbar for cluster representation
+    cbar = plt.colorbar(ax.scatter([], [], [], c=[], cmap="Spectral"))
+    cbar.set_label("Cluster")
+
+    plot_filename = "static/cluster_plot.png"
+    plt.savefig(plot_filename)
+    plt.close(fig)
+
+    return render_template('cluster.html', clusters=cluster_counts, data_lrfm=merged_df, plot_filename=plot_filename)
 
 @app.route('/download_merged_df', methods=['GET','POST'])
 def download_merged_df():
@@ -102,7 +124,6 @@ def download_merged_df():
 def download_cluster():
     return render_template('download_cluster.html')
 
-
 @app.route('/process_data')
 def process_data():
     # Access the preprocessed data through the global variable
@@ -115,6 +136,7 @@ def process_data():
 
     # Render the process_data.html template and pass the preprocessed data
     return render_template('process_data.html', data=preprocessed_data_html)
+
 
 @app.route('/saveddata')
 def saveddata():
